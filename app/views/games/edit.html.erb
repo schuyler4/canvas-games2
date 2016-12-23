@@ -1,0 +1,6 @@
+<h1> this is the edit page </h1>
+<%= form_for game_path(@game) do |f| %>
+  <%= f.text_field :title %>
+  <%= f.text_area :description %>
+  <%= f.text_area :code %>
+<% end %>

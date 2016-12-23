@@ -1,0 +1,7 @@
+<h1> This Will be the new page</h1>
+<%= form_for @game, url: games_path do |f| %>
+  <%= f.text_field :title %>
+  <%= f.text_area :description %>
+  <%= f.text_area :code %>
+  <%= f.submit %>
+<% end %>

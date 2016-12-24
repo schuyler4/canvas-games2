@@ -2,7 +2,11 @@ require 'test_helper'
 
 class GameTest < ActiveSupport::TestCase
   def setup
-    @game = Game.new(title: "game", description: "fun", code: "console.log('hello')")
+    user = User.new(username: "bannanaMan", email: "bannanaMan@gmail.com",
+      password: "bannana")
+    @game = Game.new(title: "game", description: "fun",
+      code: "console.log('hello')")
+    @game.user = user
   end
 
   def test_game

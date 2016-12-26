@@ -15,7 +15,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   def test_create
     post login_url, params: {email: @user.email, password: @user.password}
-    assert_redirected_to root_path
+    assert_redirected_to user_path(@user)
   end
 
   def test_delete

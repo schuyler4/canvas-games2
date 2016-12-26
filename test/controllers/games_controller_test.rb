@@ -8,11 +8,12 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
     login(@user)
 
     @game = Game.new(title: 'fdas', description: 'fasf', code: 'fasdfasdf')
+    @game.user = @user
     @game.save
   end
 
   def test_index
-    get games_url
+    get user_games_url(@user)
     assert_response :success
   end
 
@@ -22,7 +23,7 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_edit
-    get edit_game_url(@user, @game)
+    get edit_user_game_url(@game.user, @game)
     assert_response :success
   end
 
@@ -33,24 +34,25 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
 
   def test_create
     assert_difference('Game.count') do
-      post games_url, params: {game:
+      post user_games_url(@user), params: {game:
         {title: 'game', description: 'a game', code: '//game'}}
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to user_game_url(@user, Game.last)
   end
 
   def test_update
-    patch game_url(@game), params: {game:
+    @user = @game.user
+    patch user_game_url(@user, @game), params: {game:
       {title: 'some game', description: 'some game', code: '//some game'}}
 
-    assert_redirected_to root_path
+    assert_redirected_to user_game_url(@user, @game)
     assert @game.title, 'some game'
   end
 
   def test_delete
     assert_difference('-Game.count') do
-      delete game_url(@game)
+      delete user_game_url(@game.user, @game)
     end
 
     assert_redirected_to root_path

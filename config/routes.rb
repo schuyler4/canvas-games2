@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   get 'signup' => 'users#new'
 
   resources :users do
-    resources :games
+    resources :games do
+      resources :comments
+    end
   end
 
   get 'login' => 'sessions#new'

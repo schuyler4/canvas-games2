@@ -1,5 +1,10 @@
 <h1>Top Rated Games</h1>
 
 <% @games.each do |game| %>
-  <%= link_to game.title, game_path(game) %> 
+  <% if game.user %>
+    <h3><%= link_to game.title, user_game_path(game.user, game) %></h3>
+  <% else %>
+    <h3><%= game.title %></h3>
+  <% end %>
+  <p><%= game.description %></p>
 <% end %>

@@ -11,4 +11,8 @@ class ActiveSupport::TestCase
   def login(user)
     post login_url, params: {email: user.email, password: user.password}
   end
+
+  def logout(user)
+    delete logout_path
+  end
 end

@@ -1,13 +1,19 @@
 <h1><%= @game.title %></h1>
 <p><%= @game.description %></p>
 <pre><%= @game.code %></pre>
+<canvas id="canvas" border="2px solid black" width="600" height="400"></canvas>
+<script>
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  <%= @game.code %>
+</script>
 
 <% flash.each do |name, msg| -%>
       <%= content_tag :div, msg, class: name %>
 <% end %>
 
 <% if current_user %>
-  <%= form_for [@user, @game, @comment] do |f| %>
+  <%= form_for [current_user, @game, @comment] do |f| %>
     <%= f.text_area :body %>
     <%= f.submit "Comment"%>
   <% end %>
@@ -15,21 +21,21 @@
   <p> you must sign up to comment </p>
 <% end %>
 
-<button>Show Comment Options</button>
-<% @comments.reverse_each do |comment| %>
+<button id="showBtn">Show Comment Options</button>
+<% @game.comments.all.reverse_each do |comment| %>
   <div>
     <div class="editBox">
-      <% if @user == comment.user %>
-        <%= form_for [@user, @game, comment] do |f| %>
+      <% if current_user == comment.user %>
+        <%= form_for [current_user, @game, comment] do |f| %>
           <%= f.text_area :body %>
           <%= f.submit %>
         <% end %>
       <% end %>
-      <% if @user == comment.user || @user == game.user %>
-        <%= link_to 'Destroy',  [@user, @game, comment],
+      <% if current_user == comment.user %>
+        <%= link_to 'Destroy',  [current_user, @comment.game, comment],
           method: :delete, data: { confirm: 'Are you sure?' } %>
       <% end %>
     </div>
-  <p><%= comment.body %></p>
-</div>
+    <p><%= comment.body %></p>
+  </div>
 <% end %>

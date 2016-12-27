@@ -55,6 +55,6 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
       delete user_game_url(@game.user, @game)
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to user_path(@user)
   end
 end

@@ -2,29 +2,24 @@ class GamesController < ApplicationController
   before_action :require_user, only: [:new, :edit, :create, :update, :destroy]
 
   def index
-    @user = current_user
     @games = Game.all
   end
 
   def new
-    @user = current_user
-    @game = Game.new
+    @game = current_user.games.new
   end
 
   def show
     @game = Game.find(params[:id])
-    @user = current_user
-    @comment = Comment.new
-    @comments = @game.comments.all
+    @comment = current_user.comments.new
   end
 
   def edit
     @game = Game.find(params[:user_id], params[:id])
-    @user = @game.user
   end
 
   def create
-    @game = Game.new(game_params)
+    @game = current_user.games.new(game_params)
     @game.user = current_user
 
     if @game.save
@@ -33,17 +28,15 @@ class GamesController < ApplicationController
     else
       flash[:error] = "something is not right are your sure your
         title and description are filled out"
-
       render 'new'
     end
   end
 
   def update
-    @game = Game.find(params[:id])
-    @user = @game.user
+    @game = current_user.games.find(params[:id])
 
     if @game.update(game_params)
-      redirect_to user_game_path(@user, @game)
+      redirect_to user_game_path(current_user, @game)
       flash[:success] = "your game has been saved successfuly"
     else
       flash[:error] = "something is not right are your sure your
@@ -54,10 +47,10 @@ class GamesController < ApplicationController
   end
 
   def destroy
-    @game = Game.find(params[:id])
+    @game = current_user.games.find(params[:id])
     @game.delete
 
-    redirect_to root_path
+    redirect_to user_path(current_user)
   end
 
   private
